@@ -8,17 +8,21 @@ package My_package;
  *
  * @author Yamashita
  */
-public class Task {
-    
-    String task;
-    String dueDate;
+public class StudentInput {
+    private String subject;
+    private String task;
+    private String dueDate;
     String status = "Pending...";
     
-    public Task(String task, String dueDate) {
+    public StudentInput(String subject, String task, String dueDate) {
+        this.subject = subject;
         this.task = task;
         this.dueDate = dueDate;
     }
     
+    public String getSubject() {
+        return subject;
+    }
     public String getTask() {
         return task;
     }
@@ -27,7 +31,7 @@ public class Task {
         return dueDate;
     }
     
-    public String toFile() {
-        return task + "|" + dueDate + "|" + status;
+    public String toMyTask() {
+        return subject + "|" + task + "|" + dueDate + "|" + status;
     }
 }

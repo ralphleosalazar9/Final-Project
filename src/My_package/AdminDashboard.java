@@ -20,7 +20,11 @@ public class AdminDashboard extends javax.swing.JFrame {
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         
+        FileHandler.createTaskFile();
+        
         javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel)taskTable.getModel();
+        
+        FileHandler.loadTask(model);
         
         boolean success = FileHandler.loadTask(model);
         
@@ -43,9 +47,8 @@ public class AdminDashboard extends javax.swing.JFrame {
         taskTable = new javax.swing.JTable();
         boxOptions = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
+        btnEdit = new javax.swing.JButton();
         addTask = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -60,17 +63,17 @@ public class AdminDashboard extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(taskTable);
 
-        boxOptions.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Options", "Register", "Students", "Accounts", "Logout" }));
+        boxOptions.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Options", "Students", "Register", "Accounts", "Logout" }));
         boxOptions.addActionListener(this::boxOptionsActionPerformed);
 
         jLabel1.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         jLabel1.setText("CLASSROOM TASKS:");
 
-        jButton1.setText("Delete");
+        btnDelete.setText("Delete");
+        btnDelete.addActionListener(this::btnDeleteActionPerformed);
 
-        jButton2.setText("Mark us done");
-
-        jButton3.setText("Edit");
+        btnEdit.setText("Edit");
+        btnEdit.addActionListener(this::btnEditActionPerformed);
 
         addTask.setText("Add Task");
         addTask.addActionListener(this::addTaskActionPerformed);
@@ -91,11 +94,9 @@ public class AdminDashboard extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(addTask)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton3)
+                        .addComponent(btnEdit)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton2)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton1))
+                        .addComponent(btnDelete))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 831, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(64, Short.MAX_VALUE))
         );
@@ -107,9 +108,8 @@ public class AdminDashboard extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3)
+                    .addComponent(btnDelete)
+                    .addComponent(btnEdit)
                     .addComponent(addTask))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 488, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -138,10 +138,6 @@ public class AdminDashboard extends javax.swing.JFrame {
                 Register register = new Register();
                 register.setVisible(true);
                 this.dispose();
-            } else if (selectedOption.equals("Students")) {
-                StudentInfo studentInfo = new StudentInfo();
-                studentInfo.setVisible(true);
-                this.dispose();
             } else if (selectedOption.equals("Accounts")) {
                 AccountInfo accountInfo = new AccountInfo();
                 accountInfo.setVisible(true);
@@ -149,6 +145,10 @@ public class AdminDashboard extends javax.swing.JFrame {
             } else if (selectedOption.equals("Logout")) {
                 LandPage landPage = new LandPage();
                 landPage.setVisible(true);
+                this.dispose();
+            } else if (selectedOption.equals("Students")) {
+                StudentInfo studentInfo = new StudentInfo();
+                studentInfo.setVisible(true);
                 this.dispose();
             }
         }
@@ -158,6 +158,54 @@ public class AdminDashboard extends javax.swing.JFrame {
         AddClassTask addClassTask = new AddClassTask();
         addClassTask.setVisible(true);
     }//GEN-LAST:event_addTaskActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel)taskTable.getModel();
+        int selectedRow = taskTable.getSelectedRow();
+        
+        if (selectedRow != -1) {
+            int choice = javax.swing.JOptionPane.showConfirmDialog(this, 
+                    "Are you sure you want to delete this task?",
+                    "Delete Task", javax.swing.JOptionPane.YES_NO_OPTION);
+            
+            if (choice == javax.swing.JOptionPane.YES_OPTION) {
+                model.removeRow(selectedRow);
+                
+                boolean isDeleted = FileHandler.deleteRecord(model, "Task.txt");
+                
+                if (isDeleted) {
+                    javax.swing.JOptionPane pane = new javax.swing.JOptionPane("Task deleted.",
+                        javax.swing.JOptionPane.INFORMATION_MESSAGE,
+                        javax.swing.JOptionPane.DEFAULT_OPTION,
+                        null, new Object[]{}, null);
+
+                    javax.swing.JDialog dialog = pane.createDialog(this, "Delete Task");
+
+                    javax.swing.Timer timer = new javax.swing.Timer(1000, tEvt -> dialog.dispose());
+                    timer.setRepeats(false);
+                    timer.start();
+
+                    dialog.setVisible(true);
+                } else {
+                    javax.swing.JOptionPane.showMessageDialog(this, "Error.");
+                }
+            }
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Select a task first.");
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel)taskTable.getModel();
+        int selectedRow = taskTable.getSelectedRow();
+        
+        if (selectedRow != -1) {
+            EditClassTask editTask = new EditClassTask(this);
+            editTask.setVisible(true);
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Select a task first");
+        }
+    }//GEN-LAST:event_btnEditActionPerformed
 
     /**
      * @param args the command line arguments
@@ -187,12 +235,11 @@ public class AdminDashboard extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addTask;
     private javax.swing.JComboBox<String> boxOptions;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnEdit;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable taskTable;
+    public javax.swing.JTable taskTable;
     // End of variables declaration//GEN-END:variables
 }

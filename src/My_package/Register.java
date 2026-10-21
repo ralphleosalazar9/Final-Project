@@ -8,7 +8,6 @@ package My_package;
  *
  * @author Yamashita
  */
-import java.io.*;
 public class Register extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Register.class.getName());

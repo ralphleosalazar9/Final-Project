@@ -8,7 +8,6 @@ package My_package;
  *
  * @author Yamashita
  */
-import java.io.*;
 
 public class AddClassTask extends javax.swing.JFrame {
     
@@ -126,8 +125,7 @@ public class AddClassTask extends javax.swing.JFrame {
         if (task.isEmpty() || dueDate.isEmpty()) {
             javax.swing.JOptionPane.showMessageDialog(this, "Please dont leave a blank.");
         } else {
-            
-            Task addTask = new Task(task, dueDate);
+            AdminInput addTask = new AdminInput(task, dueDate);
             
             boolean isSave = FileHandler.addClassTask(addTask);
             

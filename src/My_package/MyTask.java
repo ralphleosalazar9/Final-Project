@@ -31,6 +31,8 @@ public class MyTask extends javax.swing.JFrame {
         
         javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel)myTaskTable.getModel();
         
+        FileHandler.createMyTaskFile();
+        
         boolean successDisplay = FileHandler.readTask(model, studentId);
         
         if (!successDisplay) {
@@ -51,9 +53,9 @@ public class MyTask extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         myTaskTable = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnEdit = new javax.swing.JButton();
         btnAdd = new javax.swing.JButton();
         btnGoBack = new javax.swing.JButton();
 
@@ -72,11 +74,14 @@ public class MyTask extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         jLabel1.setText("My Task");
 
-        jButton1.setText("Delete");
+        btnDelete.setText("Delete");
+        btnDelete.addActionListener(this::btnDeleteActionPerformed);
 
         jButton2.setText("Mark us done");
+        jButton2.addActionListener(this::jButton2ActionPerformed);
 
-        jButton3.setText("Edit");
+        btnEdit.setText("Edit");
+        btnEdit.addActionListener(this::btnEditActionPerformed);
 
         btnAdd.setText("Add");
         btnAdd.addActionListener(this::btnAddActionPerformed);
@@ -99,11 +104,11 @@ public class MyTask extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnAdd)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton3)
+                                .addComponent(btnEdit)
                                 .addGap(18, 18, 18)
                                 .addComponent(jButton2)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton1))))
+                                .addComponent(btnDelete))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(btnGoBack)))
@@ -117,9 +122,9 @@ public class MyTask extends javax.swing.JFrame {
                 .addGap(16, 16, 16)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton1)
+                        .addComponent(btnDelete)
                         .addComponent(jButton2)
-                        .addComponent(jButton3)
+                        .addComponent(btnEdit)
                         .addComponent(btnAdd))
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -152,6 +157,54 @@ public class MyTask extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnGoBackActionPerformed
 
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel)myTaskTable.getModel();
+        int selectedRow = myTaskTable.getSelectedRow();
+        
+        if (selectedRow != -1) {
+            int choice = javax.swing.JOptionPane.showConfirmDialog(this, 
+                    "Are you sure you want to delete this task?",
+                    "Delete Task", javax.swing.JOptionPane.YES_NO_OPTION);
+            
+            if (choice == javax.swing.JOptionPane.YES_OPTION) {
+                model.removeRow(selectedRow);
+                
+                boolean isDeleted = FileHandler.deleteRecord(model, "Task.txt");
+                
+                if (isDeleted) {
+                    javax.swing.JOptionPane pane = new javax.swing.JOptionPane("Task deleted.",
+                        javax.swing.JOptionPane.INFORMATION_MESSAGE,
+                        javax.swing.JOptionPane.DEFAULT_OPTION,
+                        null, new Object[]{}, null);
+
+                    javax.swing.JDialog dialog = pane.createDialog(this, "Delete Task");
+
+                    javax.swing.Timer timer = new javax.swing.Timer(1000, tEvt -> dialog.dispose());
+                    timer.setRepeats(false);
+                    timer.start();
+
+                    dialog.setVisible(true);
+                } else {
+                    javax.swing.JOptionPane.showMessageDialog(this, "Erro.");
+                }
+            }
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        int selectedRow = myTaskTable.getSelectedRow();
+        
+        if (selectedRow != -1) {
+            javax.swing.JOptionPane.showMessageDialog(this, "This feauture is unavailable!");
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Select a task first.");
+        }
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        javax.swing.JOptionPane.showMessageDialog(this, "This feauture is unavailable!");
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -179,10 +232,10 @@ public class MyTask extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnGoBack;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

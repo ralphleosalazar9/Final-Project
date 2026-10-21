@@ -9,16 +9,23 @@ package My_package;
  * @author Yamashita
  */
 
-public class UserInput {
+public class AdminInput {
     
     private String fullName;
     private String idNumber;
     private String password;
+    private String task;
+    private String dueDate;
+    String status = "Pending...";
     
-    public UserInput(String fullName, String idNumber, String password) {
+    public AdminInput(String fullName, String idNumber, String password) {
         this.fullName = fullName;
         this.idNumber = idNumber;
         this.password = password;
+    }
+    public AdminInput(String task, String dueDate) {
+        this.task = task;
+        this.dueDate = dueDate;
     }
  
     public String getFullName() {
@@ -33,7 +40,19 @@ public class UserInput {
         return password;
     }
     
-    public String toFile() {
+    public String toRegister() {
         return fullName + "|" + idNumber + "|" + password;
+    }
+    
+    public String getTask() {
+        return task;
+    }
+    
+    public String getDueDate() {
+        return dueDate;
+    }
+    
+    public String toTask() {
+        return task + "|" + dueDate + "|" + status;
     }
 }

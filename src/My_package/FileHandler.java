@@ -27,10 +27,14 @@ public class FileHandler {
         File file = new File("MyTask.txt");
     }
     
-    public static boolean saveToRegister(UserInput account) {
+    public static void createCopyTask() {
+        File file = new File("CopyTask.txt");
+    }
+    
+    public static boolean saveToRegister(AdminInput account) {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter("Register.txt", true));
-            writer.write(account.toFile());
+            writer.write(account.toRegister());
             writer.newLine();
             writer.close();
             return true;
@@ -137,10 +141,10 @@ public class FileHandler {
         return true;
     }
     
-    public static boolean addClassTask(Task task) {
+    public static boolean addClassTask(AdminInput task) {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter("Task.txt", true));
-            writer.write(task.toFile());
+            writer.write(task.toTask());
             writer.newLine();
             writer.close();
         } catch (Exception e) {
@@ -148,6 +152,42 @@ public class FileHandler {
         }
         return true;
     }
+    
+     public static boolean editClassTask(javax.swing.table.DefaultTableModel model, AdminInput task) {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("Task.txt", false));
+            for (int i = 0; i < model.getRowCount(); i++) {
+                String Task = model.getValueAt(i, 0).toString();
+                String DueDate = model.getValueAt(i, 1).toString();
+                String Status = model.getValueAt(i, 2).toString();
+                
+                writer.write(Task + "|" + DueDate + "|" + Status);
+                writer.newLine();
+            }
+            writer.close();
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+     
+     public static boolean editAccount(javax.swing.table.DefaultTableModel model, AdminInput account) {
+         try {
+             BufferedWriter writer = new BufferedWriter(new FileWriter("Account.txt", false));
+             for (int i = 0; i < model.getRowCount(); i++) {
+                 String fullName = model.getValueAt(i, 0).toString();
+                 String IdNumber = model.getValueAt(i, 1).toString();
+                 String  password = model.getValueAt(i, 2).toString();
+                 
+                 writer.write(fullName + "|" + IdNumber + "|" + password);
+                 writer.newLine();
+             };
+             writer.close();
+         } catch (Exception e) {
+             return false;
+         }
+         return true;
+     }
     
     public static boolean loadTask(javax.swing.table.DefaultTableModel model) {
         model.setRowCount(0);
@@ -199,7 +239,6 @@ public class FileHandler {
     public static boolean readTask(javax.swing.table.DefaultTableModel model, String currentStudentId) {
         model.setRowCount(0);
         
-        System.out.println("Current Session ID: [" + currentStudentId + "]");
         try {
             BufferedReader reader = new BufferedReader(new FileReader("MyTask.txt"));
             String line;

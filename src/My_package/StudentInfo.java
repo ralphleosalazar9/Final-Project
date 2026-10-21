@@ -52,7 +52,7 @@ public class StudentInfo extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Full Name", "ID number", "Task Status"
+                "Full Name", "Task", "Status"
             }
         ));
         jScrollPane1.setViewportView(studentTable);
@@ -141,7 +141,7 @@ public class StudentInfo extends javax.swing.JFrame {
     }//GEN-LAST:event_searchStudentActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        // TODO add your handling code here:
+        javax.swing.JOptionPane.showMessageDialog(this, "This feauture is unavailable!");
     }//GEN-LAST:event_btnSearchActionPerformed
 
     /**

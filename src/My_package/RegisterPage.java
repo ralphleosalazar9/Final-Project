@@ -8,7 +8,6 @@ package My_package;
  *
  * @author Yamashita
  */
-import java.io.*;
 
 public class RegisterPage extends javax.swing.JFrame {
     
@@ -24,8 +23,7 @@ public class RegisterPage extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         
-        FileHandler fileHandler = new FileHandler();
-        fileHandler.createFileRegister();
+        FileHandler.createFileRegister();
     }
 
     /**
@@ -183,7 +181,7 @@ public class RegisterPage extends javax.swing.JFrame {
         } else if (FileHandler.checkId(idNumber, "Register.txt") || FileHandler.checkId(idNumber, "Account.txt")) {
             javax.swing.JOptionPane.showMessageDialog(this, "This ID has already existed.");
         } else {
-            UserInput register = new UserInput(fullName, idNumber, password);
+            AdminInput register = new AdminInput(fullName, idNumber, password);
             
             boolean isSaved = FileHandler.saveToRegister(register);
             

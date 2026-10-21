@@ -56,8 +56,8 @@ public class AccountInfo extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
+        btnEditAccount = new javax.swing.JButton();
         btnAddAccount = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -80,10 +80,11 @@ public class AccountInfo extends javax.swing.JFrame {
 
         jLabel2.setText("Search Student:");
 
-        jButton1.setText("Delete");
-        jButton1.addActionListener(this::jButton1ActionPerformed);
+        btnDelete.setText("Delete");
+        btnDelete.addActionListener(this::btnDeleteActionPerformed);
 
-        jButton2.setText("Edit Account");
+        btnEditAccount.setText("Edit Account");
+        btnEditAccount.addActionListener(this::btnEditAccountActionPerformed);
 
         btnAddAccount.setText("Add Account");
         btnAddAccount.addActionListener(this::btnAddAccountActionPerformed);
@@ -104,16 +105,16 @@ public class AccountInfo extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnAddAccount)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton2)
+                                .addComponent(btnEditAccount)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton1))
+                                .addComponent(btnDelete))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 816, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(btnGoBack)
                         .addGap(292, 292, 292)
                         .addComponent(jLabel1)))
-                .addContainerGap(67, Short.MAX_VALUE))
+                .addContainerGap(68, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -129,8 +130,8 @@ public class AccountInfo extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
+                    .addComponent(btnDelete)
+                    .addComponent(btnEditAccount)
                     .addComponent(btnAddAccount))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -165,7 +166,7 @@ public class AccountInfo extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnGoBackActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel)accountTable.getModel();
         int selectedRow = accountTable.getSelectedRow();
 
@@ -200,7 +201,19 @@ public class AccountInfo extends javax.swing.JFrame {
         else {
             javax.swing.JOptionPane.showMessageDialog(this, "Select an account first.");
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnEditAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditAccountActionPerformed
+        javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel)accountTable.getModel();
+        int selectedRow = accountTable.getSelectedRow();
+        
+        if (selectedRow != -1) {
+            EditAccount editAccount = new EditAccount(this);
+            editAccount.setVisible(true);
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Select an account first.");
+        }
+    }//GEN-LAST:event_btnEditAccountActionPerformed
 
     /**
      * @param args the command line arguments
@@ -230,9 +243,9 @@ public class AccountInfo extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JTable accountTable;
     private javax.swing.JButton btnAddAccount;
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnEditAccount;
     private javax.swing.JButton btnGoBack;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;

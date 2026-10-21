@@ -30,6 +30,18 @@ public class StudentDashboard extends javax.swing.JFrame {
         this.studentId = studentId;
         
         lblName.setText("Welcome, " + this.fullName + "!");
+        
+        FileHandler.createTaskFile();
+        
+        javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel)taskTable.getModel();
+        
+        FileHandler.loadTask(model);
+        
+        boolean success = FileHandler.loadTask(model);
+        
+        if (!success) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Error.");
+        }
     }
     
 
@@ -70,13 +82,15 @@ public class StudentDashboard extends javax.swing.JFrame {
         jLabel2.setText("CLASSROOM TASK");
 
         jButton2.setText("Mark as done");
+        jButton2.addActionListener(this::jButton2ActionPerformed);
 
         btnMyTask.setText("My Task");
         btnMyTask.addActionListener(this::btnMyTaskActionPerformed);
 
         jButton1.setText("Logout");
+        jButton1.addActionListener(this::jButton1ActionPerformed);
 
-        lblName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblName.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblName.setText("jLabel3");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -84,41 +98,43 @@ public class StudentDashboard extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(67, 67, 67)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 819, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(lblName)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(67, 67, 67)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 819, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(jLabel2)
+                                    .addComponent(lblName)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(btnMyTask)
                                     .addGap(18, 18, 18)
                                     .addComponent(jButton2)
                                     .addGap(18, 18, 18)
-                                    .addComponent(jButton1)))
-                            .addGap(4, 4, 4))))
+                                    .addComponent(jButton1)
+                                    .addGap(4, 4, 4)))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(358, 358, 358)
+                        .addComponent(jLabel2)))
                 .addContainerGap(64, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(47, 47, 47)
-                .addComponent(lblName)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(27, 27, 27)
+                .addComponent(jLabel2)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
                     .addComponent(btnMyTask)
                     .addComponent(jButton1)
-                    .addComponent(jLabel2))
+                    .addComponent(lblName))
                 .addGap(8, 8, 8)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 477, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(57, Short.MAX_VALUE))
+                .addContainerGap(61, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -140,6 +156,16 @@ public class StudentDashboard extends javax.swing.JFrame {
         myTask.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnMyTaskActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        javax.swing.JOptionPane.showMessageDialog(this, "This feauture is unavailable!");
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        LandPage landPage = new LandPage();
+        landPage.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
