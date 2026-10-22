@@ -192,13 +192,8 @@ public class MyTask extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-        int selectedRow = myTaskTable.getSelectedRow();
-        
-        if (selectedRow != -1) {
-            javax.swing.JOptionPane.showMessageDialog(this, "This feauture is unavailable!");
-        } else {
-            javax.swing.JOptionPane.showMessageDialog(this, "Select a task first.");
-        }
+        EditMyTask editMyTask = new EditMyTask();
+        editMyTask.setVisible(true);
     }//GEN-LAST:event_btnEditActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

@@ -9,6 +9,7 @@ package My_package;
  * @author Yamashita
  */
 public class StudentInput {
+    
     private String subject;
     private String task;
     private String dueDate;

@@ -15,8 +15,40 @@ public class EditMyTask extends javax.swing.JFrame {
     /**
      * Creates new form EditMyTask
      */
+    private MyTask myTask;
+    private String oldTask;
     public EditMyTask() {
         initComponents();
+    }
+    
+    public EditMyTask(MyTask myTask) {
+        initComponents();
+        this.myTask = myTask;
+        this.setResizable(false);
+        this.setLocationRelativeTo(null);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        
+        try {
+            javax.swing.text.MaskFormatter dateMask = new javax.swing.text.MaskFormatter("##/##/####");
+            dateMask.setPlaceholderCharacter('_');
+            dateMask.install(txtDueDate);
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+        }
+        
+        if (myTask != null) {
+            int selectedRow = this.myTask.myTaskTable.getSelectedRow();
+            
+            if (selectedRow != -1) {
+                javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel)myTask.myTaskTable.getModel();
+                txtSubject.setText(model.getValueAt(selectedRow, 0).toString());
+                txtTask.setText(model.getValueAt(selectedRow, 1).toString());
+                txtDueDate.setText(model.getValueAt(selectedRow, 2).toString());
+                
+                
+                this.oldTask = model.getValueAt(selectedRow, 0).toString();
+            } 
+        }
     }
 
     /**
@@ -30,19 +62,20 @@ public class EditMyTask extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        txtSubject = new javax.swing.JTextField();
+        txtTask = new javax.swing.JTextField();
+        btnSave = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jFormattedTextField1 = new javax.swing.JFormattedTextField();
+        txtDueDate = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setText("Edit Task");
 
-        jButton1.setText("Save");
+        btnSave.setText("Save");
+        btnSave.addActionListener(this::btnSaveActionPerformed);
 
         jLabel2.setText("Subject");
 
@@ -50,7 +83,12 @@ public class EditMyTask extends javax.swing.JFrame {
 
         jLabel4.setText("Due Date");
 
-        jFormattedTextField1.addActionListener(this::jFormattedTextField1ActionPerformed);
+        txtDueDate.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtDueDateFocusGained(evt);
+            }
+        });
+        txtDueDate.addActionListener(this::txtDueDateActionPerformed);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -58,11 +96,11 @@ public class EditMyTask extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(btnSave)
                 .addGap(109, 109, 109))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtDueDate, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addGap(123, 123, 123)
@@ -71,12 +109,12 @@ public class EditMyTask extends javax.swing.JFrame {
                             .addGap(70, 70, 70)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel2)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(txtSubject, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addGap(70, 70, 70)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel3)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(txtTask, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addGap(70, 70, 70)
                             .addComponent(jLabel4))))
@@ -90,17 +128,17 @@ public class EditMyTask extends javax.swing.JFrame {
                 .addGap(23, 23, 23)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtSubject, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(23, 23, 23)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtTask, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(23, 23, 23)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtDueDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(51, 51, 51)
-                .addComponent(jButton1)
+                .addComponent(btnSave)
                 .addContainerGap(50, Short.MAX_VALUE))
         );
 
@@ -118,9 +156,56 @@ public class EditMyTask extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jFormattedTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextField1ActionPerformed
+    private void txtDueDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDueDateActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jFormattedTextField1ActionPerformed
+    }//GEN-LAST:event_txtDueDateActionPerformed
+
+    private void txtDueDateFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtDueDateFocusGained
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            txtDueDate.setCaretPosition(0);
+        });
+    }//GEN-LAST:event_txtDueDateFocusGained
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel)myTask.myTaskTable.getModel();
+        String newSubject = txtSubject.getText().trim();
+        String newTask = txtTask.getText().trim();
+        String newDueDate = txtDueDate.getText().trim();
+        
+        int rowToEdit = -1;
+        for (int i = 0; i < model.getRowCount(); i++) {
+            if (model.getValueAt(i, 0).toString().equals(oldTask)){
+                rowToEdit = i;
+                break;
+            }
+        }
+        
+        if (rowToEdit != -1) {
+            model.setValueAt(newSubject, rowToEdit, 0);
+            model.setValueAt(newTask, rowToEdit, 1);
+            model.setValueAt(newDueDate, rowToEdit, 2);
+        }
+        
+        StudentInput taskObj = new StudentInput(newSubject, newTask, newDueDate);
+        boolean edited = FileHandler.editMyTask(model, taskObj);
+        
+        if (edited) {
+            javax.swing.JOptionPane pane = new javax.swing.JOptionPane("Task Edited successfuly.",
+            javax.swing.JOptionPane.INFORMATION_MESSAGE,
+            javax.swing.JOptionPane.DEFAULT_OPTION, null, new Object[]{}, null);
+            
+            javax.swing.JDialog dialog = pane.createDialog(this, "Success");
+            
+            javax.swing.Timer timer = new javax.swing.Timer(1000, tEvt -> dialog.dispose());
+            timer.setRepeats(false);
+            timer.start();
+            
+            dialog.setVisible(true);
+            this.dispose();
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Error");
+        }
+    }//GEN-LAST:event_btnSaveActionPerformed
 
     /**
      * @param args the command line arguments
@@ -148,14 +233,14 @@ public class EditMyTask extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JFormattedTextField jFormattedTextField1;
+    private javax.swing.JButton btnSave;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JFormattedTextField txtDueDate;
+    private javax.swing.JTextField txtSubject;
+    private javax.swing.JTextField txtTask;
     // End of variables declaration//GEN-END:variables
 }

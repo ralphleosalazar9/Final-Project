@@ -236,6 +236,25 @@ public class FileHandler {
         }
     }
     
+    public static boolean editMyTask(javax.swing.table.DefaultTableModel model, StudentInput task) {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("MyTask.txt", false));
+            for (int i = 0; i < model.getRowCount(); i++) {
+                String subject = model.getValueAt(i, 0).toString();
+                String taskName = model.getValueAt(i, 1).toString();
+                String dueDate = model.getValueAt(i, 2).toString();
+                String status = model.getValueAt(i, 3).toString();
+            
+            writer.write(subject + "|" + taskName + "|" + dueDate + "|" + status);
+            writer.newLine();
+        }
+            writer.close();
+        } catch (Exception e) {
+            return false;
+        }
+        return false;
+    }
+    
     public static boolean readTask(javax.swing.table.DefaultTableModel model, String currentStudentId) {
         model.setRowCount(0);
         
