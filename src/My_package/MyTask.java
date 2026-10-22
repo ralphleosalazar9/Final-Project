@@ -192,7 +192,7 @@ public class MyTask extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-        EditMyTask editMyTask = new EditMyTask();
+        EditMyTask editMyTask = new EditMyTask(this);
         editMyTask.setVisible(true);
     }//GEN-LAST:event_btnEditActionPerformed
 
